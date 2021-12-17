@@ -7,8 +7,8 @@ apiAddr="https://www.aleo.network/api/miner-info?address="
 #####  END CONFIG  ##################################################################################################
 
 nodeState=$(curl -s --data-binary '{"jsonrpc": "2.0", "id":"documentation", "method": "getnodestate", "params": [] }' -H 'content-type: application/json' $rpcAddr | jq '.result')
-minerAddress=$(journalctl -u aleod-miner.service --since="10 min ago" -o cat | grep confirmed_blocks | tail -n1 | awk '{print $14}' | sed -r 's/\)//g')
-blocksMined=$(journalctl -u aleod-miner.service --since="10 min ago" -o cat | grep confirmed_blocks | tail -n1 | awk '{print ($8+$11)}')
+minerAddress=$(journalctl -u aleod-miner.service --since="10 min ago" -o cat | grep confirmed_blocks | tail -n1 | awk '{print $13}' | sed -r 's/\)//g')
+blocksMined=$(journalctl -u aleod-miner.service --since="10 min ago" -o cat | grep confirmed_blocks | tail -n1 | awk '{print ($7+$10)}')
 
 minerInfoFromAPI=$(curl -s -H 'content-type: application/json' "$apiAddr$minerAddress" | jq)
 lb_blocksMined=$(echo "$minerInfoFromAPI" | jq '.blocksMined | length')
